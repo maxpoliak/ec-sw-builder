@@ -79,7 +79,6 @@ application:
 	@echo ' '
 	@echo '  [ APP ]  Build user space applications:'
 	@echo $(APP_MAKE)
-	
 
 cleanapp:
 	@echo ' '
@@ -91,11 +90,11 @@ cleanall: clean cleanapp
 
 info:
 	@echo ' '
-	@echo 'Patches:      '$(addprefix "\n" ' [ MOD ]  ' , $(PATCHES) )	
+	@echo 'Patches:      '$(addprefix "\n" ' [ MOD ]  ' , $(PATCHES) )
 	@echo ' '
-	@echo 'Directories:  '$(addprefix "\n" ' [ MOD ]  ' , $(MOD_DIR) )	
+	@echo 'Directories:  '$(addprefix "\n" ' [ MOD ]  ' , $(MOD_DIR) )
 	@echo ' '
-	@echo 'Directories:  '$(addprefix "\n" ' [ APP ]  ' , $(APP_DIRS) )	
+	@echo 'Directories:  '$(addprefix "\n" ' [ APP ]  ' , $(APP_DIRS) )
 	@echo ' '
 	@echo 'Source files: '$(addprefix "\n" ' [ SRC ]  ' , $(SOURCES) )
 	@echo ' '
