@@ -1,0 +1,3 @@
+[submodule "fabric-ec"]
+	path = fabric-ec
+	url = https://github.com/YADRO-KNS/fabric-ec.git
