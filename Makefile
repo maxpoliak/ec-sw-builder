@@ -20,7 +20,7 @@
 
 #  name of linux kernel module
 MODULE_NAME ?= ec
-MODULE_DIR  ?= ecdrv
+MODULE_DIR  ?= fabric-ec
 
 # absolute path sdk
 THIS_FILE := $(lastword $(MAKEFILE_LIST))
