@@ -38,8 +38,18 @@ APP_DIRS  := $(subst $(PATCH_DIR), ,$(subst $(MOD_DIR), ,$(ALL_DIRS)))
 APP_MAKE  = $(foreach dir,$(APP_DIRS),$(shell make -f $(THIS_DIR)/$(dir)/Makefile))
 APP_CLEAN = $(foreach dir,$(APP_DIRS),$(shell make -f $(THIS_DIR)/$(dir)/Makefile clean))
 
+#firmware version
+define git_info
+$(shell git -C $(THIS_DIR)/$(1) describe --always $(2))
+endef
+MOD_COMMIT = $(call git_info,$(MOD_DIR))
+MOD_BRANCH = $(call git_info,$(MOD_DIR),--all --dirty)
+SDK_COMMIT = $(call git_info)
+SDK_BRANCH = $(call git_info, ,--all --dirty)
+BUILD_DATE = $(shell date +%y.%m.%d-%H:%M:%S)
+
 obj-m += $(MODULE_NAME).o
-ccflags-y := -Wall -O -Wmaybe-uninitialized -Werror -I$(THIS_DIR)/ecdrv -DEC_MOD_NAME="$(MODULE_NAME)"
+ccflags-y := -Wall -O -Wmaybe-uninitialized -Werror -I$(THIS_DIR)/ecdrv -DEC_MOD_NAME="$(MODULE_NAME)" -DEC_FW_COMMIT=0x$(MOD_COMMIT) -DEC_FW_BRANCH='"${MOD_BRANCH}"' -DSDK_GIT_COMMIT=0x$(SDK_COMMIT) -DSDK_GIT_BRANCH='"${SDK_BRANCH}"'
 $(MODULE_NAME)-y := $(OBJECTS)
 
 ifneq ($(KERNELRELEASE),)
@@ -51,8 +61,11 @@ KERNELDIR := /lib/modules/$(KERNELVER)/build
 PWD       := $(THIS_DIR)
 
 default:
+	@echo '"${BUILD_DATE}"'
+	@echo 'fabric-ec branch:commit'
+	@echo '"${MOD_BRANCH}" : $(MOD_COMMIT)'
 	@echo ' '
-	@echo '  [ MOD ]  Build:'
+	@echo 'Build log:'
 	$(MAKE) -C $(KERNELDIR) M=$(PWD) modules
 
 clean:
@@ -89,6 +102,9 @@ cleanapp:
 cleanall: clean cleanapp
 
 info:
+	@echo '"${BUILD_DATE}"'
+	@echo 'builder info: "${SDK_BRANCH}" : $(SDK_COMMIT)'
+	@echo 'fabric-ec info: "${MOD_BRANCH}" : $(MOD_COMMIT)'
 	@echo ' '
 	@echo 'Patches:      '$(addprefix "\n" ' [ MOD ]  ' , $(PATCHES) )
 	@echo ' '
