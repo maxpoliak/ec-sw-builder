@@ -49,7 +49,7 @@ SDK_BRANCH = $(call git_info, ,--all --dirty)
 BUILD_DATE = $(shell date +%y.%m.%d-%H:%M:%S)
 
 obj-m += $(MODULE_NAME).o
-ccflags-y := -Wall -O -Wmaybe-uninitialized -Werror -I$(THIS_DIR)/ecdrv -DEC_MOD_NAME="$(MODULE_NAME)" -DEC_FW_COMMIT=0x$(MOD_COMMIT) -DEC_FW_BRANCH='"${MOD_BRANCH}"' -DSDK_GIT_COMMIT=0x$(SDK_COMMIT) -DSDK_GIT_BRANCH='"${SDK_BRANCH}"'
+ccflags-y := -Wall -O -Wmaybe-uninitialized -Werror -DEC_MOD_NAME='"${MODULE_NAME}"' -DEC_FW_COMMIT=0x$(MOD_COMMIT) -DEC_FW_BRANCH='"${MOD_BRANCH}"' -DSDK_GIT_COMMIT=0x$(SDK_COMMIT) -DSDK_GIT_BRANCH='"${SDK_BRANCH}"'
 $(MODULE_NAME)-y := $(OBJECTS)
 
 ifneq ($(KERNELRELEASE),)
